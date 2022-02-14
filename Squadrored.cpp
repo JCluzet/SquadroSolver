@@ -7,7 +7,50 @@
 #define RESET "\033[0m"
 #define GREEN "\033[1;32m"
 
+
 Squadro::Squadro()
+{
+    for (int i = 0; i < 7; i++)
+    {
+        for (int j = 0; j < 7; j++)
+        {
+            _gameboard[i][j] = 0;
+        }
+    }
+    for (int i = 0; i < 6; i++)
+    {
+        _red[i] = 0;
+        _yellow[i] = 0;
+        _redend[i] = false;
+        _yellowend[i] = false;
+    }
+
+    _yellowmoves[1] = 3;
+    _yellowmoves[2] = 1;
+    _yellowmoves[3] = 2;
+    _yellowmoves[4] = 1;
+    _yellowmoves[5] = 3;
+
+    _redmoves[1] = 1;
+    _redmoves[2] = 3;
+    _redmoves[3] = 2;
+    _redmoves[4] = 3;
+    _redmoves[5] = 1;
+
+    _gameboard[6][1] = 1; // red
+    _gameboard[6][2] = 1;
+    _gameboard[6][3] = 1;
+    _gameboard[6][4] = 1;
+    _gameboard[6][5] = 1;
+
+    _gameboard[1][6] = 2; // yellow
+    _gameboard[2][6] = 2;
+    _gameboard[3][6] = 2;
+    _gameboard[4][6] = 2;
+    _gameboard[5][6] = 2;
+}
+
+void Squadro::reset()
 {
     for (int i = 0; i < 7; i++)
     {
@@ -238,7 +281,7 @@ int Squadro::move_red(int nb)
 int Squadro::redwin(void)
 {
     int ret = 0;
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 6; i++)
     {
         if (_redend[i] == true)
         {
@@ -255,7 +298,7 @@ int Squadro::redwin(void)
 int Squadro::yellowwin(void)
 {
     int ret = 0;
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 6; i++)
     {
         if (_yellowend[i] == true)
         {
@@ -278,8 +321,36 @@ int Squadro::yellowwin(void)
 
 void Squadro::show()
 {
+    std::cout << "       •       •" << std::endl;
+    std::cout << "       •   •   •" << std::endl;
+    std::cout << "       • • • • •" << std::endl;
+    std::cout << std::endl;
     for (int i = 0; i < 7; i++)
     {
+        if (i == 0 || i == 6)
+        {
+            std::cout << "     ";
+        }
+        if (i == 1)
+        {
+            std::cout << "  •  ";
+        }
+        if (i == 2)
+        {
+            std::cout << "•••  ";
+        }
+        if (i == 3)
+        {
+            std::cout << " ••  ";
+        }
+        if (i == 4)
+        {
+            std::cout << "•••  ";
+        }
+        if (i == 5)
+        {
+            std::cout << "  •  ";
+        }
         for (int j = 0; j < 7; j++)
         {
             if ((i == 0 && j == 0) || (i == 6 && j == 0) || (i == 0 && j == 6) || (i == 6 && j == 6))
@@ -308,9 +379,36 @@ void Squadro::show()
                     std::cout << _gameboard[i][j] << " ";
             }
         }
-
+        if (i == 0 || i == 6)
+        {
+            std::cout << "    ";
+        }
+        if (i == 1)
+        {
+            std::cout << " •••";
+        }
+        if (i == 2)
+        {
+            std::cout << " •";
+        }
+        if (i == 3)
+        {
+            std::cout << " ••";
+        }
+        if (i == 4)
+        {
+            std::cout << " •";
+        }
+        if (i == 5)
+        {
+            std::cout << " •••";
+        }
         std::cout << std::endl;
     }
+        std::cout << std::endl;
+        std::cout << "       • • • • •" << std::endl;
+        std::cout << "         • • •  " << std::endl;
+        std::cout << "         •   •  " << std::endl;
     //std::cout << std::endl << std::endl << std::endl;
         // std::cout << std::endl;
         // // output _red[u] from 1 to 5 

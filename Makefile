@@ -15,9 +15,10 @@ FLAGS    := -Wall -Wextra -Werror -std=c++98
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
 
-SRCS        :=      Squadroyellow.cpp \
+SRCS        :=      main.cpp \
+                          SquadroAI.cpp \
                           Squadrored.cpp \
-                          main.cpp \
+                          Squadroyellow.cpp \
                           
 OBJS        := ${SRCS:.cpp=.o}
 

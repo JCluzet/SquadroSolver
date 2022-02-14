@@ -11,6 +11,7 @@ class Squadro {
         int _gameboard[7][7];
     public:
         Squadro();
+        Squadro(const Squadro &a);
         ~Squadro();
         void show();
         
@@ -23,4 +24,9 @@ class Squadro {
         int move_red_one(int nb);
         void reset_yellow(int nb);
         int yellowwin();
+
+        // AI PART
+        int find_best_redmove();
+        void reset();
+        // int find_best_yellowmove();
 }; // RED IS 1 and YELLOW IS 2
