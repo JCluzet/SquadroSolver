@@ -16,17 +16,25 @@ int main(void)
     int temp = 0;
     int v = 0;
     int count = 0;
+    int out = 0;
     Squadro a;
     system("clear");
     a.show();
 
     // show a prompt to choose what point to move
     // ask question and answer with y or n
-    std::cout << "\nAuto-move y or manual-move n ? (y/n)" << std::endl;
+    std::cout << "\nTraining DeepLearning (y) or manual-move (n) ? (y/n)" << std::endl;
     std::string answer;
     std::cin >> answer;
     if (answer == "y")
     {
+        std::string answer2;
+        std::cout << "Do you want to train with the gameboard output ? (y/n)" << std::endl;
+        std::cin >> answer2;
+        if (answer2 == "y")
+        {
+            out=1;
+        }
         while (1)
         {
             count = 0;
@@ -37,7 +45,7 @@ int main(void)
         while (1)
         {
             std::ofstream myfile;
-            myfile.open("count.txt", std::ios::app);
+            myfile.open("DeepLearning.txt", std::ios::app);
             if (temp == 0)
             {
                 int nb = 0;
@@ -49,9 +57,13 @@ int main(void)
                     myfile << "r:" << nb;
                 }
                 count++;
-                a.show();
+                if (out == 1)
+                {
+                    a.show();
                 std::cout << std::endl << "Moving red " << nb << std::endl << std::endl;
-                std::cout << "Games played : " << v << std::endl;
+                }
+                if (out == 1)
+                    std::cout << "Games played : " << v << std::endl;
                 temp = 1;
             }
             else
@@ -67,15 +79,22 @@ int main(void)
                     myfile << "y:" << nb;
                 }
                 count++;
-                a.show();
-                std::cout << std::endl << "Moving yellow " << nb << std::endl << std::endl;
-                std::cout << "Games played : " << v << std::endl;
+                if (out == 1)
+                {
+                    a.show();
+                    std::cout << std::endl << "Moving yellow " << nb << std::endl << std::endl;
+                }
+                if (out == 1)
+                    std::cout << "Games played : " << v << std::endl;
                 temp = 0;
             }
             if (a.redwin() == 1)
             {
-                a.show();
+                if (out == 1)
+                {
+                    a.show();
                 std::cout << "\nRED WIN" << std::endl;
+                }
                     v++;
                 a.reset();
                 myfile << "R" << std::endl;
@@ -83,9 +102,12 @@ int main(void)
             }
             if (a.yellowwin() == 1)
             {
-                a.show();
-                std::cout << "\nYELLOW WIN" << std::endl;
-                    v++;
+                if (out == 1)
+                {
+                    a.show();
+                    std::cout << "\nYELLOW WIN" << std::endl;
+                }
+                v++;
                 a.reset();
                 // add a line in count.txt containing the count var 
                 myfile << "Y" << std::endl;
@@ -96,8 +118,23 @@ int main(void)
             // std::cout << "Touch to show" << std::endl;
             // std::cin.ignore();
             // std::cin.get();
-            usleep(20000);
+            if (out == 1)
+            {
+                usleep(20000);
             system("clear");
+            }
+            else
+            {
+                // sleep(1);
+                std::cout << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b";
+                if (v < 10)
+                    std::cout << "\b";
+                if (v < 100)
+                    std::cout << "\b";
+                if (v < 1000)
+                    std::cout << "\b";
+                std::cout << "Games played : " << v;
+            }
         if (v > 100)
         {
             exit(0);
