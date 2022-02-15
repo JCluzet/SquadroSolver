@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-Squadro::Squadro(const Squadro &a)
+Squadro::Squadro(Squadro &a)
 {
     for (int i = 0; i < 7; i++)
     {
@@ -24,30 +24,74 @@ Squadro::Squadro(const Squadro &a)
     }
 }
 
-int Squadro::find_best_redmove()
+int Squadro::scorered() 
 {
-    // Use constructor to copy the gameboard
-    Squadro sq1(*this);
-    Squadro sq2(*this);
-    Squadro sq3(*this);
-    Squadro sq4(*this);
-    Squadro sq5(*this);
+    // the score of red is the 
+    int score = 0;
+    for (int i = 0; i < 6; i++)
+    {
+        score += _rscore[i];
+    }
+    return score;
+}
 
-    // Test all possible moves, and return the best one (the one that have more probability to win)
-    // To find the best move, we need to test all possible moves, and test all possible moves until the end of the game
-    // To avoid too many tests, we try 1 million test by turn (1 million test = 1 million turns)
+int Squadro::AI_redscore()
+{
+    return (scorered() - scoreyellow());
+}
 
-    // First, we test all possible moves for red
+int Squadro::AI_yellowscore()
+{
+    return (scoreyellow() - scorered());
+}
+
+int Squadro::scoreyellow()
+{
+    // the score of yellow is the 
+    int score = 0;
+    for (int i = 0; i < 6; i++)
+    {
+        score += _yscore[i];
+    }
+    return score;
+}
+
+int Squadro::find_best_move(std::string fen)
+{
     int bestmove = 0;
+    _fen = fen;
+    Squadro a;
+    a.get_fen(fen);
+    int bestscore = -100000;
     for (int i = 1; i < 6; i++)
     {
-        if (!sq1._redend[i])
+        if (a._redend[i] == false)
         {
-            sq1.move_red(i);
+            a.move_red(i);
+            for (int j = 1; j < 6; j++)
+            {
+                if (a._yellowend[j] == false)
+                {
+                    a.move_yellow(j);
+                    for (int v = 1; v < 6; v++)
+                    {
+                        if (a._redend[v] == false)
+                        {
+                            a.move_red(v);
+                            int score = a.AI_redscore();
+                            if (score > bestscore)
+                            {
+                                bestscore = score;
+                                bestmove = i;
+                            }
+                            a.get_fen(fen);
+                        }
+                    }
+                }
+            }
         }
-        show();
-        usleep(600000);
     }
+
 
     return bestmove;
 }

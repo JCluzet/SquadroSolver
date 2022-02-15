@@ -23,6 +23,8 @@ Squadro::Squadro()
         _yellow[i] = 0;
         _redend[i] = false;
         _yellowend[i] = false;
+        _rscore[i] = 0;
+        _yscore[i] = 0;
     }
 
     _yellowmoves[1] = 3;
@@ -65,6 +67,8 @@ void Squadro::reset()
         _yellow[i] = 0;
         _redend[i] = false;
         _yellowend[i] = false;
+        _rscore[i] = 0;
+        _yscore[i] = 0;
     }
 
     _yellowmoves[1] = 3;
@@ -171,11 +175,13 @@ void Squadro::reset_yellow(int nb)
     {
         _gameboard[nb][6] = 2;
         _yellow[nb] = 0;
+        _yscore[nb] = 0;
     }
     else 
     {
         _gameboard[nb][0] = 2;
         _yellow[nb] = 6;
+        _yscore[nb] = 6/_yellowmoves[nb];
     }
 }
 
@@ -210,7 +216,7 @@ int Squadro::move_red_one(int nb) // 1
     {
         _gameboard[line][nb] = 0;
         _gameboard[newline][nb] = 1;
-        if (newline == 7)
+        if (newline == 6)
         {
             _redend[nb] = true;
         }
@@ -256,6 +262,7 @@ int Squadro::move_red(int nb)
     {
         return 1;
     }
+    _rscore[nb] += 1;
     // std::cout << "There is " << _redmoves[nb] << " moves for " << nb << std::endl;
     for (int i = 0; i < _redmoves[nb]; i++)
     {
@@ -276,6 +283,18 @@ int Squadro::move_red(int nb)
     //     return 1;
     // }
     return 0;
+}
+
+Squadro Squadro::operator=(Squadro &other)
+{
+    for (int i = 0; i < 6; i++)
+    {
+        _red[i] = other._red[i];
+        _yellow[i] = other._yellow[i];
+        _redmoves[i] = other._redmoves[i];
+        _redend[i] = other._redend[i];
+    }
+    return *this;
 }
 
 int Squadro::redwin(void)
@@ -376,7 +395,12 @@ void Squadro::show()
                         std::cout << YELLOW << "◀" << RESET << " ";
                 }
                 else
-                    std::cout << _gameboard[i][j] << " ";
+                {
+                    if (j == 0 || j == 6 || i == 0 || i == 6)
+                        std::cout << ". ";
+                    else
+                        std::cout << _gameboard[i][j] << " ";
+                }
             }
         }
         if (i == 0 || i == 6)

@@ -65,11 +65,13 @@ void Squadro::reset_red(int nb)
     {
         _gameboard[6][nb] = 1;
         _red[nb] = 0;
+        _rscore[nb] = 0;
     }
     else 
     {
         _gameboard[0][nb] = 1;
         _red[nb] = 6;
+        _rscore[nb] = 6/_redmoves[nb];
     }
 }
 
@@ -163,6 +165,7 @@ int Squadro::move_yellow(int nb)
     {
         return 1;
     }
+    _yscore[nb] += 1;
     // std::cout << "There is " << _yellowmoves[nb] << " moves for " << nb << std::endl;
     for (int i = 0; i < _yellowmoves[nb]; i++)
     {
